@@ -9,7 +9,7 @@ namespace Infrustructure
     {
         static void Main(string[] args)
         {
-            var path = "C:\\filr.txt";
+            var path = "D:\\filr.txt";
             var readlines = File.ReadAllLines(path);
             using (StreamWriter sw = new StreamWriter("D:\\output.txt"))
             {
