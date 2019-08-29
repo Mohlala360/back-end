@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ControllerApp.Extentions;
+using ControllerApp.Interfaces;
+using ControllerApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -31,6 +33,8 @@ namespace ControllerApp
             services.ConfigureIISIntegration();
 
             services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:PrinStan"]));
+
+            services.AddScoped<IUserInterface, UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

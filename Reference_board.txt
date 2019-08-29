@@ -1,1 +1,3 @@
 https://code-maze.com/net-core-web-api-ef-core-code-first/
+https://code-maze.com/net-core-web-development-part4/#repository
+https://code-maze.com/net-core-web-development-part5/#routing
