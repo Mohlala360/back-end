@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DomainApp.Users
+﻿
+namespace ControllerApp.Users
 {
     public class User
     {
