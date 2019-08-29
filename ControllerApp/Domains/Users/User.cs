@@ -1,5 +1,5 @@
 ﻿
-namespace ControllerApp.Users
+namespace ControllerApp.Domains.Users
 {
     public class User
     {

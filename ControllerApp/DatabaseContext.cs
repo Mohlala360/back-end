@@ -1,4 +1,4 @@
-﻿using ControllerApp.Users;
+﻿using ControllerApp.Domains.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControllerApp
