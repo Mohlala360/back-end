@@ -17,10 +17,12 @@ namespace ControllerApp.Services
 
         public User AddUser(User user)
         {
-            var u = new User();
-            u.Email = user.Email;
-            u.Name = user.Name;
-            u.Surname = user.Surname;
+            var u = new User
+            {
+                Email = user.Email,
+                Name = user.Name,
+                Surname = user.Surname
+            };
             _databaseContext.Users.Add(u);
             _databaseContext.SaveChanges();
             return u;
