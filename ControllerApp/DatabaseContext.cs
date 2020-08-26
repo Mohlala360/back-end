@@ -1,4 +1,9 @@
-﻿using ControllerApp.Domains.Users;
+﻿using ControllerApp.DatabaseRules.Books;
+using ControllerApp.DatabaseRules.UserBooks;
+using ControllerApp.DatabaseRules.Users;
+using ControllerApp.Domains.Books;
+using ControllerApp.Domains.UserBooks;
+using ControllerApp.Domains.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControllerApp
@@ -9,18 +14,23 @@ namespace ControllerApp
         {
         }
 
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserBook> UserBooks { get; set; }
+        public DbSet<UserBookState> UserBookStates { get; set; }
+        public DbSet<UserBookStatus> UserBookStatuses { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                UserId = 1,
-                Name = "Stanley",
-                Surname = "Mohlala",
-                Email = "Stanzo360@outlook.com",                
-
-            });
+            modelBuilder.ApplyConfiguration(new AuthorRule());
+            modelBuilder.ApplyConfiguration(new BookRule());
+            modelBuilder.ApplyConfiguration(new UserTypeRule());
+            modelBuilder.ApplyConfiguration(new UserRule());
+            modelBuilder.ApplyConfiguration(new UserBookStatusRule());
+            modelBuilder.ApplyConfiguration(new UserBookRule());
+            modelBuilder.ApplyConfiguration(new UserBookStateRule());
         }
     }
 }

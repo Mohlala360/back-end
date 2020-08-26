@@ -1,28 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using ControllerApp.Domains.Users;
 using ControllerApp.Interfaces;
+using ControllerApp.TempModels.Users;
 
 namespace ControllerApp.Services
 {
     public class UserService : IUserInterface
     {
+        private readonly DatabaseContext _databaseContext;
+        private readonly IMapper _mapper;
 
-        protected DatabaseContext _databaseContext { get; set; }
-
-        public UserService(DatabaseContext databaseContext)
+        public UserService(DatabaseContext databaseContext, IMapper mapper)
         {
             _databaseContext = databaseContext;
+            _mapper = mapper;
         }
 
-        public User AddUser(User user)
+        public User AddUser(TempUser tempUser)
         {
+            //var u = _mapper.Map<User>(tempUser); todo::this does not work
             var u = new User
             {
-                Email = user.Email,
-                Name = user.Name,
-                Surname = user.Surname
+                Name = tempUser.Name,
+                Surname = tempUser.Surname,
+                Email = tempUser.Email,
+                CellPhonenumber = tempUser.CellPhonenumber,
+                DateOfBirth = tempUser.DateOfBirth,
+                UserTypeId = tempUser.UserTypeId
             };
+
+            u.DateUserWasAdded = DateTime.Now;
             _databaseContext.Users.Add(u);
             _databaseContext.SaveChanges();
             return u;
@@ -44,12 +54,21 @@ namespace ControllerApp.Services
             return _databaseContext.Users.OrderByDescending(u => u.UserId).ToList();
         }
 
-        public void UpdateUser(User user, User updates)
+        public void UpdateUser(User user, TempUser tempUser)
         {
-            user.Email = updates.Email;
-            user.Name = updates.Name;
-            user.Surname = updates.Surname;
+            user.Name = tempUser.Name;
+            user.Surname = tempUser.Surname;
+            user.Email = tempUser.Email;
+            user.CellPhonenumber = tempUser.CellPhonenumber;
+            user.DateOfBirth = tempUser.DateOfBirth;
+            user.UserTypeId = tempUser.UserTypeId;
+
             _databaseContext.SaveChanges();
+        }
+
+        public List<UserType> GetUserTypes()
+        {
+            return _databaseContext.UserTypes.ToList();
         }
     }
 }

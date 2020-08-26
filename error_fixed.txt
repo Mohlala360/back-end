@@ -1,1 +1,2 @@
 post man post error  https://stackoverflow.com/questions/41597455/net-core-webapi-unable-to-post-data-with-postman-error-415-unsupported-me
+cors not loading https://stackoverflow.com/questions/58114413/how-do-i-migrate-net-core-2-2-web-api-to-net-core-3-0

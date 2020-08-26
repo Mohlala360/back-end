@@ -1,12 +1,15 @@
 ﻿
 using ControllerApp.Domains.Users;
 using ControllerApp.Interfaces;
+using ControllerApp.TempModels.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControllerApp.Controllers
 {
-    [Route("api/users")]
     [ApiController]
+    [Route("api/[controller]")]
+  
+    [ResponseCache(Duration = 5)]
     public class UsersController : ControllerBase
     {
         private readonly IUserInterface _userInterface;
@@ -35,29 +38,29 @@ namespace ControllerApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser([FromBody]User user)
+        public IActionResult AddUser([FromBody]TempUser tempUser)
         {
-            if(user == null)
+            if(tempUser == null)
             {
                 return BadRequest("User is null are you crazy");
             }
-            var u = _userInterface.AddUser(user);
+            var u = _userInterface.AddUser(tempUser);
             return Ok(u);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody]User user)
+        public IActionResult UpdateUser(int id, [FromBody]TempUser tempUser)
         {
-            if (user == null)
+            if (tempUser == null)
             {
                 return BadRequest("User is null");
             }
-            var u = _userInterface.GetUser(id);
-            if(u == null)
+            var user = _userInterface.GetUser(id);
+            if(user == null)
             {
                 return NotFound("User was not found contact Stanley");
             }
-            _userInterface.UpdateUser(u,user);
+            _userInterface.UpdateUser(user,tempUser);
             return NoContent();
         }
 
@@ -71,6 +74,13 @@ namespace ControllerApp.Controllers
             }
             _userInterface.DeleteUser(u);
             return NoContent();
+        }
+
+        [HttpGet("types")]
+        public IActionResult GetUserTypes()
+        {
+            var userTypes = _userInterface.GetUserTypes();
+            return Ok(userTypes);
         }
     }
 }
