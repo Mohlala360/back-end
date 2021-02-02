@@ -70,5 +70,10 @@ namespace ControllerApp.Services
         {
             return _databaseContext.UserTypes.ToList();
         }
+
+        public UserType GetUserType(int id)
+        {
+            return _databaseContext.UserTypes.Find(id);
+        }
     }
 }

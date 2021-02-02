@@ -23,6 +23,7 @@ namespace ControllerApp.Interfaces
         void ReturnBook(int userBookId);        
         List<UserBook> NumberOfBooksToReturn();
         List<UserBook> GetUserBooks();
+            List<UserBookState> GetUserBookStates(int stateId);
         UserBook GetUserBookById(int id);
     }
 }
