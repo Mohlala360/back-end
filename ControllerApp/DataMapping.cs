@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ControllerApp.Domains.Books;
+using ControllerApp.Domains.Cars;
 using ControllerApp.Domains.UserBooks;
 using ControllerApp.Domains.Users;
 using ControllerApp.TempModels.Books;
+using ControllerApp.TempModels.Cars;
 using ControllerApp.TempModels.UserBooks;
 using ControllerApp.TempModels.Users;
 using System.Linq;
@@ -20,15 +22,27 @@ namespace ControllerApp
             var config = new MapperConfiguration(cfg =>
             {
                 UserMappings(cfg);
-                //BookMappings(cfg);
-                //AuthoMappings(cfg);
-                //UserBookStateMappings(cfg);
-                //UserBookMappings(cfg);
+                BookMappings(cfg);
+                AuthoMappings(cfg);
+                UserBookStateMappings(cfg);
+                UserBookMappings(cfg);
+                CarBookingMappings(cfg);
             });
 
             _mapper = config.CreateMapper();
 
             return _mapper;
+        }
+
+        private static void CarBookingMappings(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<TempCarBooking, CarBooking>()
+                .ForMember(db => db.User, opt => opt.Ignore())
+                .ForMember(db => db.Car, opt => opt.Ignore())
+                .ReverseMap();
+
+            cfg.CreateMap<TempCar, Car>()
+                .ReverseMap();
         }
 
         private static void UserMappings(IMapperConfigurationExpression cfg)
@@ -40,7 +54,7 @@ namespace ControllerApp
                 .ForMember(db => db.DateUserWasAdded, opt => opt.Ignore())
                 .ForMember(db => db.UserType, opt => opt.Ignore())
                 .ReverseMap()
-                 .ForMember(db => db.UserType, opt => opt.MapFrom(d => d.UserType));            
+                 .ForMember(db => db.UserType, opt => opt.MapFrom(d => d.UserType));
         }
 
         private static void BookMappings(IMapperConfigurationExpression cfg)
