@@ -21,7 +21,6 @@ namespace ControllerApp.Services
 
         public User AddUser(TempUser tempUser)
         {
-            //var u = _mapper.Map<User>(tempUser); todo::this does not work
             var u = new User
             {
                 Name = tempUser.Name,
@@ -74,6 +73,11 @@ namespace ControllerApp.Services
         public UserType GetUserType(int id)
         {
             return _databaseContext.UserTypes.Find(id);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _databaseContext.Users.Where(u => u.Email == email).FirstOrDefault();
         }
     }
 }

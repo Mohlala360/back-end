@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ControllerApp.Domains.Cars
 {
@@ -9,5 +6,6 @@ namespace ControllerApp.Domains.Cars
     {
         public int CarId { get; set; }
         public string RegistrationNumber { get; set; }
+        public DateTime DateCaptured { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace ControllerApp.Interfaces
         List<User> GetUsers();
         List<UserType> GetUserTypes();
         UserType GetUserType(int id);
+        User GetUserByEmail(string email);
     }
 }

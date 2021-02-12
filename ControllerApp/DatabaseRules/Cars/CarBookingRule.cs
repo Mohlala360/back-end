@@ -10,7 +10,7 @@ namespace ControllerApp.DatabaseRules.Cars
         {
             builder.ToTable("CarBookings");
 
-            builder.Property(p => p.ReferenceNo).IsRequired();
+            builder.Property(p => p.ReferenceNo).HasDefaultValue("CB");
             builder.Property(p => p.BookingReason).IsRequired();
 
             builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
