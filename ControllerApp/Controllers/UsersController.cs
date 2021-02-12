@@ -23,6 +23,11 @@ namespace ControllerApp.Controllers
         public IActionResult GetUsers()
         {
             var users = _userInterface.GetUsers();
+
+            foreach(var user in users)
+            {
+                user.UserType = _userInterface.GetUserType(user.UserTypeId);
+            }
             return Ok(users);
         }
 

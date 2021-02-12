@@ -41,6 +41,8 @@ namespace ControllerApp
 
             services.AddScoped<IBookInterface, BookService>();
 
+            services.AddScoped<ICarBookingInterface, CarBookingService>();
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddMvc();

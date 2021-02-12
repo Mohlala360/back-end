@@ -16,10 +16,12 @@ namespace ControllerApp.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookInterface _bookInterface;
+        private readonly IUserInterface _userInterface;
 
-        public BooksController(IBookInterface bookInterface)
+        public BooksController(IBookInterface bookInterface,IUserInterface userInterface)
         {
             _bookInterface = bookInterface;
+            _userInterface = userInterface;
         }
 
         [HttpGet]
@@ -40,6 +42,13 @@ namespace ControllerApp.Controllers
         public IActionResult GetUserBooks()
         {
             var userBooks = _bookInterface.GetUserBooks();
+            foreach (var userBook in userBooks)
+            {
+                userBook.User = _userInterface.GetUser(userBook.UserId);
+                userBook.Book = _bookInterface.GetBookById(userBook.BookId);
+                userBook.UserBookStates = _bookInterface.GetUserBookStates(userBook.UserBookId);
+            }
+
             return Ok(userBooks);
         }
 

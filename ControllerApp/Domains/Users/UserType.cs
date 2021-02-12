@@ -5,6 +5,7 @@ namespace ControllerApp.Domains.Users
     {
 			User = 1,
 			Librarian,
+            System,
     }
     public class UserType
     {

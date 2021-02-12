@@ -115,7 +115,12 @@ namespace ControllerApp.Services
             return _databaseContext.UserBooks.ToList();
         }
 
-        public List<UserBook> NumberOfBooksToReturn()
+        public List<UserBookState> GetUserBookStates(int stateId)
+        {
+            return _databaseContext.UserBookStates.Where(u => u.UserBookId == stateId).ToList();
+        }        
+        
+       public List<UserBook> NumberOfBooksToReturn()
         {
             return
                 _databaseContext.UserBooks.Where(b => b.UserBookStates

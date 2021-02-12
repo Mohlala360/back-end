@@ -1,7 +1,9 @@
 ﻿using ControllerApp.DatabaseRules.Books;
+using ControllerApp.DatabaseRules.Cars;
 using ControllerApp.DatabaseRules.UserBooks;
 using ControllerApp.DatabaseRules.Users;
 using ControllerApp.Domains.Books;
+using ControllerApp.Domains.Cars;
 using ControllerApp.Domains.UserBooks;
 using ControllerApp.Domains.Users;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ namespace ControllerApp
         public DbSet<UserBookState> UserBookStates { get; set; }
         public DbSet<UserBookStatus> UserBookStatuses { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<CarBooking> CarBookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +35,8 @@ namespace ControllerApp
             modelBuilder.ApplyConfiguration(new UserBookStatusRule());
             modelBuilder.ApplyConfiguration(new UserBookRule());
             modelBuilder.ApplyConfiguration(new UserBookStateRule());
+            modelBuilder.ApplyConfiguration(new CarRule());
+            modelBuilder.ApplyConfiguration(new CarBookingRule());
         }
     }
 }
