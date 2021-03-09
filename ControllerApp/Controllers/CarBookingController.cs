@@ -14,7 +14,7 @@ namespace ControllerApp.Controllers
         public readonly ICarBookingInterface _carBookingInterface;
         public readonly IUserInterface _userInterface;
 
-        public CarBookingController(ICarBookingInterface carBookingInterface,IUserInterface userInterface)
+        public CarBookingController(ICarBookingInterface carBookingInterface, IUserInterface userInterface)
         {
             _carBookingInterface = carBookingInterface;
             _userInterface = userInterface;
@@ -48,14 +48,14 @@ namespace ControllerApp.Controllers
         [HttpPut]
         public IActionResult UpdateCarBooking([FromBody] TempCarBooking tempCarBooking)
         {
-            _carBookingInterface.updateBooking(tempCarBooking);
+            _carBookingInterface.UpdateBooking(tempCarBooking);
             return Ok(tempCarBooking);
         }
 
         [HttpGet]
         public IActionResult GetCarBookings()
         {
-            var carBookings = _carBookingInterface.GetCarBookings();            
+            var carBookings = _carBookingInterface.GetCarBookings();
             return Ok(carBookings);
         }
 
@@ -64,8 +64,22 @@ namespace ControllerApp.Controllers
         {
             var carBooking = _carBookingInterface.GetCarBooking(id);
             carBooking.User = _userInterface.GetUser(carBooking.UserId);
-            carBooking.Car = _carBookingInterface.getCarById(carBooking.CarId);
+            carBooking.Car = _carBookingInterface.GetCarById(carBooking.CarId);
             return Ok(carBooking);
+        }
+
+        [HttpGet("bookingStatuses")]
+        public IActionResult GetBookingStatuses()
+        {
+            var bookingStatuses = _carBookingInterface.GetBookStatuses();
+            return Ok(bookingStatuses);
+        }
+
+        [HttpPut("actionState")]
+        public IActionResult ActionState(int carBookingId, int stateId)
+        {
+            _carBookingInterface.BookOutOrBackCar(carBookingId, stateId);
+            return Ok();
         }
     }
 }

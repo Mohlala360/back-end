@@ -1,4 +1,5 @@
-﻿using ControllerApp.Domains.Users;
+﻿using ControllerApp.Domains;
+using ControllerApp.Domains.Users;
 using ControllerApp.TempModels.Users;
 using System.Collections.Generic;
 
@@ -14,5 +15,7 @@ namespace ControllerApp.Interfaces
         List<UserType> GetUserTypes();
         UserType GetUserType(int id);
         User GetUserByEmail(string email);
+        List<UserHistory> GetUserActionHistory();
+        void UpdateUserActionHistory(string action);
     }
 }

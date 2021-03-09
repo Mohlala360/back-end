@@ -87,5 +87,12 @@ namespace ControllerApp.Controllers
             var userTypes = _userInterface.GetUserTypes();
             return Ok(userTypes);
         }
+
+        [HttpGet("actionHistory")]
+        public IActionResult GetUserActiolnHistory()
+        {
+            var userHistories = _userInterface.GetUserActionHistory();
+            return Ok(userHistories);
+        }
     }
 }

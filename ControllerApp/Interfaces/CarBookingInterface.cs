@@ -9,10 +9,12 @@ namespace ControllerApp.Interfaces
         List<Car> GetCars();
         CarBooking AddCarBooking(TempCarBooking tempCarBooking);
         Car AddCar(TempCar tempCar);
-        Car getCarByRegistrationNumber(string registrationNumber);
-        Car getCarById(int id);
+        Car GetCarByRegistrationNumber(string registrationNumber);
+        Car GetCarById(int id);
         List<CarBooking> GetCarBookings();
         CarBooking GetCarBooking(int id);
-        void updateBooking(TempCarBooking tempCarBooking);
+        void UpdateBooking(TempCarBooking tempCarBooking);
+        void BookOutOrBackCar(int carBookingId, int stateId);
+        List<CarBookStatus> GetBookStatuses();
     }
 }

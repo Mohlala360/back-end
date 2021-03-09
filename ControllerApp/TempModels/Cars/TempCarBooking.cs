@@ -1,5 +1,6 @@
 ﻿using ControllerApp.TempModels.Users;
 using System;
+using System.Collections.Generic;
 
 namespace ControllerApp.TempModels.Cars
 {
@@ -16,5 +17,7 @@ namespace ControllerApp.TempModels.Cars
         public int CarId { get; set; }
         public DateTime DateCaptured { get; set; }
         public int UserCatured { get; set; }
+        public List<TempCarBookState> CarBookStates { get; set; }
+        public TempCarBookState CarBookState { get; set; }
     }
 }

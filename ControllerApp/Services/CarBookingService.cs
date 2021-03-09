@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ControllerApp.Domains.Cars;
+﻿using ControllerApp.Domains.Cars;
 using ControllerApp.Domains.Users;
 using ControllerApp.Interfaces;
 using ControllerApp.TempModels.Cars;
@@ -13,13 +12,13 @@ namespace ControllerApp.Services
     public class CarBookingService : ICarBookingInterface
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         private readonly IUserInterface _userInterface;
 
-        public CarBookingService(DatabaseContext databaseContext, IMapper mapper, IUserInterface userInterface)
+        public CarBookingService(DatabaseContext databaseContext, IUserInterface userInterface)
         {
             _databaseContext = databaseContext;
-            _mapper = mapper;
+            // _mapper = mapper;
             _userInterface = userInterface;
         }
 
@@ -27,7 +26,7 @@ namespace ControllerApp.Services
         {
             var carBooking = new CarBooking();
             var user = _userInterface.GetUserByEmail(tempCarBooking.User.Email);
-            var car = getCarByRegistrationNumber(tempCarBooking.Car.RegistrationNumber);
+            var car = GetCarByRegistrationNumber(tempCarBooking.Car.RegistrationNumber);
 
             if (user != null)
             {
@@ -61,11 +60,24 @@ namespace ControllerApp.Services
             carBooking.DateCaptured = DateTime.Now;
             carBooking.UserCatured = carBooking.UserId;
 
+            var newState = new CarBookState
+            {
+                CarBookStatusId = (int)CarBookStatuses.New,
+                DateAdded = DateTime.Now
+            };
+
+            carBooking.CarBookStates = new List<CarBookState>
+            {
+                newState
+            };
+
             _databaseContext.CarBookings.Add(carBooking);
             _databaseContext.SaveChanges();
 
             carBooking.ReferenceNo = "CB" + carBooking.CarBookingId;
             _databaseContext.SaveChanges();
+
+            _userInterface.UpdateUserActionHistory("Added New Car Request ref# "+ carBooking.ReferenceNo);
             return carBooking;
         }
 
@@ -88,12 +100,12 @@ namespace ControllerApp.Services
             return car;
         }
 
-        public Car getCarByRegistrationNumber(string registrationNumber)
+        public Car GetCarByRegistrationNumber(string registrationNumber)
         {
             return _databaseContext.Cars.Where(c => c.RegistrationNumber == registrationNumber).FirstOrDefault();
         }
 
-        public Car getCarById(int id)
+        public Car GetCarById(int id)
         {
             return _databaseContext.Cars.Find(id);
         }
@@ -102,6 +114,7 @@ namespace ControllerApp.Services
         {
             return _databaseContext.CarBookings
                 .Include(cb => cb.Car)
+				.Include(cb => cb.CarBookStates)
                 .Include(cb => cb.User).ToList();
         }
 
@@ -110,7 +123,7 @@ namespace ControllerApp.Services
             return _databaseContext.CarBookings.Find(id);
         }
 
-        public void updateBooking(TempCarBooking tempCarBooking)
+        public void UpdateBooking(TempCarBooking tempCarBooking)
         {
             var carBooking = _databaseContext.CarBookings.Find(tempCarBooking.CarBookingId);
 
@@ -122,6 +135,38 @@ namespace ControllerApp.Services
 
             carBooking.DateCaptured = DateTime.Now;
             _databaseContext.SaveChanges();
+            _userInterface.UpdateUserActionHistory("Updated Car Booking with ref# : " + carBooking.ReferenceNo);
+        }
+
+        public void BookOutOrBackCar(int carBookingId, int stateId)
+        {
+            var carBooking = _databaseContext.CarBookings.Find(carBookingId);
+
+            var state = new CarBookState
+            {
+                CarBookingId = carBooking.CarBookingId,
+                CarBookStatusId = stateId,
+                DateAdded = DateTime.Now,
+            };
+            _databaseContext.CarBookStates.Add(state);
+            _databaseContext.SaveChanges();
+            var action = "";
+            switch (stateId)
+            {
+                case 2:
+                    action = "Out";
+                    break;
+                case 3:
+                    action = "Back";
+                    break;
+            }
+            _userInterface.UpdateUserActionHistory("Car with reg# " + carBooking.Car.RegistrationNumber +
+                " was actioned " + action);
+        }
+
+        public List<CarBookStatus> GetBookStatuses()
+        {
+            return _databaseContext.CarBookStatuses.ToList();
         }
     }
 }

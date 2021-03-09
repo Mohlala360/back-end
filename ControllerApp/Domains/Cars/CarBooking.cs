@@ -1,5 +1,6 @@
 ﻿using ControllerApp.Domains.Users;
 using System;
+using System.Collections.Generic;
 
 namespace ControllerApp.Domains.Cars
 {
@@ -16,5 +17,6 @@ namespace ControllerApp.Domains.Cars
         public int CarId { get; set; }
         public DateTime DateCaptured { get; set; }
         public int UserCatured { get; set; }
+        public virtual ICollection<CarBookState> CarBookStates { get; set; }
     }
 }

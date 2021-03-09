@@ -11,8 +11,7 @@ namespace ControllerApp.DatabaseRules.UserBooks
             builder.ToTable("UserBooks");
 
             builder.HasOne(p => p.Book).WithMany().HasForeignKey(p => p.BookId);
-            builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
-            
-        }
+            builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);            
+        }   
     }
 }

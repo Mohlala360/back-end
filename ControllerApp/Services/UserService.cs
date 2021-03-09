@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using ControllerApp.Domains;
 using ControllerApp.Domains.Users;
 using ControllerApp.Interfaces;
 using ControllerApp.TempModels.Users;
@@ -78,6 +79,22 @@ namespace ControllerApp.Services
         public User GetUserByEmail(string email)
         {
             return _databaseContext.Users.Where(u => u.Email == email).FirstOrDefault();
+        }
+
+        public List<UserHistory> GetUserActionHistory()
+        {
+            return _databaseContext.UserHistories.ToList();
+        }
+
+        public void UpdateUserActionHistory(string action)
+        {
+            var updateActionHistory = new UserHistory
+            {
+                Action = action,
+                ActionDate = DateTime.Now
+            };
+            _databaseContext.UserHistories.Add(updateActionHistory);
+            _databaseContext.SaveChanges();
         }
     }
 }
